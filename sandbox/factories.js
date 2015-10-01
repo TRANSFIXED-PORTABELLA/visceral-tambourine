@@ -1,7 +1,10 @@
 angular.module('app.services', [])
   .factory('socket', function ($rootScope) {
+    //initializes a socket connection on the client
     var socket = io.connect();
     return {
+      //this is the angular implementation of the socket io methods on and emit
+      //stolen from the internet
       on: function (eventName, callback) {
         socket.on(eventName, function () {
           var args = arguments;
@@ -20,6 +23,7 @@ angular.module('app.services', [])
           });
         });
       },
+      //a getter for the id of the socket
       id: function () {
         return socket.id;
       },
@@ -56,8 +60,8 @@ angular.module('app.services', [])
     }
   ])
   .factory('Event', function () {
+    //globally stored event name for routing purposes.
     return {
       event: '',
-      songs: [],
     };
   });
