@@ -5,16 +5,16 @@ angular.module('app.controllers', [])
       $scope.join = function (event) {
         //send the event to the server
         socket.emit('join', event);
+        socket.on('success', function (success) {
+          if (success) {
+            Event.event = event;
+            //move the insider into the event
+            $location.path('/events/' + event);
+          } else {
+            $scope.error = true;
+          }
+        })
       };
-      socket.on('success', function (success) {
-        if (success) {
-          Event.event = event;
-          //move the insider into the event
-          $location.path('/events/' + event);
-        } else {
-          $scope.error = true;
-        }
-      })
       //directs user to the create event page
       $scope.create = function () {
         $location.path('/create');
@@ -29,7 +29,7 @@ angular.module('app.controllers', [])
         socket.emit('create', event);
         socket.on('createable', function (createable) {
           if (createable) {
-          //set the name of the event.
+            //set the name of the event.
             Event.event = event;
             Event.creator = socket.id();
             //redirect  to the event
@@ -41,23 +41,85 @@ angular.module('app.controllers', [])
       };
     }
   ])
+  .controller('PlaylistController', ['$scope', '$state', 'socket', 'Event',
+    function ($scope, $state, socket, Event) {
+
+      $scope.songs = Event.getSongs();
+
+      socket.on('songAdded', function (song) {
+        if (Event.songs.indexOf(song) === -1) {
+          Event.addSong(song);
+          $scope.songs = Event.getSongs();
+        }
+      });
+
+      $scope.voteUp = function (song) {
+        song.votes++
+        socket.emit('voteUp', song);
+      }
+
+      // $scope.voteDown = function (song) {
+      //   song.votes--
+      //   socket.emit('voteDown', song);
+      // }
+
+      socket.on('votedUp', function (song) {
+        for (var i = 0; i < Event.songs.length; i++) {
+          if (Event.songs[i].id === song.id) {
+            Event.songs[i] = song;
+            $scope.songs = Event.getSongs();
+          }
+        }
+      });
+
+
+      // socket.on('votedDown', function (song) {
+      //   for (var i = 0; i < Event.songs.length; i++) {
+      //     if (Event.songs[i].id === song.id) {
+      //       Event.songs[i] = song;
+      //       $scope.songs = Event.getSongs();
+      //     }
+      //   }
+      // });
+
+    }
+  ])
   .controller('EventController', ['$window', '$scope', '$state', 'socket', 'Event',
     function ($window, $scope, $state, socket, Event) {
-      //this is the array that gets ng-repeated in the view
-      $scope.songs = [];
+
+      //    ##INITIAL ROOM SETUP##
 
       // this variable will let us hide the player from event insiders other than
       // the creator
       $scope.isCreator = socket.id() === Event.creator;
-
+      //set playlist view as default
+      $state.go('event.playlist');
       // to keep track of which song is up
       $scope.songIndex = 0;
+      //let the server know that insider has arrived in the room.
 
-      //link to the search view
-      $scope.search = function () {
-        $state.go('event.search');
-      };
 
+      socket.emit('joined');
+      socket.on('welcome', function (songs) {
+        //add the songs from the server to the local array
+        //making sure thats its empty before doing so
+        console.log("SONGS FROM SERVER", songs);
+        console.log("EVENT.SONGS", Event.songs);
+        if (Event.songs.length === 0) {
+          for (var i = 0; i < songs.length; i++) {
+            Event.addSong(songs[i]);
+          }
+          $scope.songs = Event.getSongs();
+          console.log("LOOOOOOOOK!!!!", $scope.songs);
+        }
+      });
+
+      $scope.songs = Event.getSongs();
+
+      socket.on('songAdded', function (song) {
+        $scope.songs = Event.getSongs();
+      })
+      //Logic for sharing the url of the event
       $scope.roomInvite = $state.href($state.current.name, $state.params, {
         absolute: true
       });
@@ -65,31 +127,13 @@ angular.module('app.controllers', [])
         new Clipboard('.share');
       };
 
-      //let the server know that insider has arrived in the room.
-      socket.emit('joined');
+      //link to the search view
+      $scope.search = function () {
+        $state.go('event.search');
+      };
 
-      //server responses to this with the eventState
-      socket.on('joined', function (songs) {
-        //add the songs from the server to the local array
-        //making sure thats its empty before doing so
-        if ($scope.songs.length === 0) {
-
-          $scope.songs = songs || [];
-        }
-
-      });
-
-      //server get the song from the insider that added the song and
-      //boadcasts it to everyone in the event. Here we get the song and
-      //add it to our local array
-      socket.on('songAdded', function (song) {
-        $scope.songs.push(song);
-      });
-
-      $state.go('event.playlist');
 
       // fired when the youtube iframe api is ready
-
       $window.onPlayerReady = function onPlayerReady(event) {
         console.log("ready");
         if ($scope.songs[$scope.songIndex] && socket.id() === Event.creator) {
@@ -104,7 +148,7 @@ angular.module('app.controllers', [])
       // fired on any youtube state change, checks for a video ended event and
       // plays next song if yes
       $window.loadNext = function loadNext(event) {
-        if ($scope.songs[$scope.songIndex] && event.data === YT.PlayerState.ENDED && socket.id() === Event.creator) {
+        if ($scope.songs[$scope.songIndex] && event.data === YT.PlayerState.ENDED && $scope.isCreator) {
           console.log("loadNext");
           player.loadVideoById($scope.songs[$scope.songIndex].id);
           $scope.songIndex++;
@@ -164,9 +208,5 @@ angular.module('app.controllers', [])
             });
           });
       };
-
-      socket.on('songAdded', function (song) {
-        console.log(song);
-      });
     }
   ]);

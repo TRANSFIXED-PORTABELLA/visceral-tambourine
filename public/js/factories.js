@@ -29,8 +29,8 @@ angular.module('app.services', [])
       },
     };
   })
-  .factory('searchFactory', ['$http', '$window', 'socket',
-    function ($http, $window, socket) {
+  .factory('searchFactory', ['$http', '$window', 'socket', 'Event',
+    function ($http, $window, socket, Event) {
       var key = 'AIzaSyC_7kwz1nFe3CW8DxIcA9j8dI1oOQjOzFM';
 
       return {
@@ -49,6 +49,8 @@ angular.module('app.services', [])
 
         //The addSong factory method aids the addSong controller method in adding songs to the playlist.
         addSong: function (song) {
+          song.votes = 0;
+          Event.addSong(song);
           socket.emit('addSong', song);
         },
 
@@ -63,7 +65,13 @@ angular.module('app.services', [])
     //globally stored event name for routing purposes.
     return {
       event: '',
-      creator: ''
+      creator: '',
+      songs: [],
+      getSongs: function () {
+        return this.songs;
+      },
+      addSong: function (song) {
+        this.songs.push(song);
+      }
     };
   });
-
