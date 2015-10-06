@@ -1,4 +1,4 @@
-angular.module('app', ['app.controllers', 'app.services','ui.router'])
+angular.module('app', ['app.controllers', 'app.services','ui.router', 'app.url'])
   .config(function ($stateProvider, $locationProvider) {
     $stateProvider
       .state('landing', {

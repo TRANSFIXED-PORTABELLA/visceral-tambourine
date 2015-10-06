@@ -1,4 +1,4 @@
-angular.module('app.services', ['app.config'])
+angular.module('app.services', ['app.url'])
   .factory('socket', function ($rootScope) {
     //initializes a socket connection on the client
     var socket = io.connect();
@@ -29,8 +29,8 @@ angular.module('app.services', ['app.config'])
       },
     };
   })
-  .factory('searchFactory', ['$http', '$window', 'socket', 'PREPEND_URL', 'APPEND_URL',
-    function ($http, $window, socket) {
+  .factory('searchFactory', ['$http', '$window', 'socket', 'Url',
+    function ($http, $window, socket, Url) {
 
       return {
         //The searchFactory getSearch results method handles the get request using the searchTerms provided
@@ -38,7 +38,7 @@ angular.module('app.services', ['app.config'])
         getSearchResults: function (searchTerm) {
           var editedSearchTerm = searchTerm.split(' ').join('+');
 
-          return $http.get(PREPEND_URL + editedSearchTerm + APPEND_URL)
+          return $http.get(Url.PREPEND_URL + editedSearchTerm + Url.APPEND_URL)
             .then(function (res) {
               return res.data;
             }, function (res) {
