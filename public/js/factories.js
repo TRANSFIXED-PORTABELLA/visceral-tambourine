@@ -1,4 +1,4 @@
-angular.module('app.services', [])
+angular.module('app.services', ['app.config'])
   .factory('socket', function ($rootScope) {
     //initializes a socket connection on the client
     var socket = io.connect();
@@ -29,9 +29,8 @@ angular.module('app.services', [])
       },
     };
   })
-  .factory('searchFactory', ['$http', '$window', 'socket',
+  .factory('searchFactory', ['$http', '$window', 'socket', 'PREPEND_URL', 'APPEND_URL'
     function ($http, $window, socket) {
-      var key = 'AIzaSyC_7kwz1nFe3CW8DxIcA9j8dI1oOQjOzFM';
 
       return {
         //The searchFactory getSearch results method handles the get request using the searchTerms provided
@@ -39,7 +38,7 @@ angular.module('app.services', [])
         getSearchResults: function (searchTerm) {
           var editedSearchTerm = searchTerm.split(' ').join('+');
 
-          return $http.get('https://www.googleapis.com/youtube/v3/search?part=snippet&q=' + editedSearchTerm + '&maxResults=10&key=' + key)
+          return $http.get(PREPEND_URL + editedSearchTerm + APPEND_URL)
             .then(function (res) {
               return res.data;
             }, function (res) {
