@@ -29,7 +29,7 @@ angular.module('app.services', ['app.config'])
       },
     };
   })
-  .factory('searchFactory', ['$http', '$window', 'socket', 'PREPEND_URL', 'APPEND_URL'
+  .factory('searchFactory', ['$http', '$window', 'socket', 'PREPEND_URL', 'APPEND_URL',
     function ($http, $window, socket) {
 
       return {
