@@ -31,12 +31,12 @@
   function onYouTubeIframeAPIReady() {
     console.log("api ready");
     player = new YT.Player('player', {
-      height: '275',
-           width: '275',
+      height: '500',
+           width: '500',
            //videoId: 'CpmDAu_47OE',
            events: {
-             'onReady': onPlayerReady,
-           'onStateChange': loadNext
+            'onReady': onPlayerReady,
+            'onStateChange': loadNext
            }
     });
   }

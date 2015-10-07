@@ -42,8 +42,8 @@ angular.module('app.controllers', [])
       };
     }
   ])
-  .controller('EventController', ['$window', '$scope', '$state', 'socket', 'Event',
-    function ($window, $scope, $state, socket, Event) {
+  .controller('EventController', ['$window', '$scope', '$state', 'socket', 'Event', '$rootScope',
+    function ($window, $scope, $state, socket, Event, $rootScope) {
       //this is the array that gets ng-repeated in the view
       $scope.songs = [];
 
@@ -103,8 +103,9 @@ angular.module('app.controllers', [])
         $scope.songs.forEach(function (item, index) {
             if (item.id === song.id) {
               $scope.songs.splice(index, 1);
-              $scope.sortedSongs.splice(0, 1);
-              $scope.$apply();
+              if ($scope.sortedSongs) {
+                $scope.sortedSongs.splice(0, 1);
+              }
             }
           });
       });
@@ -120,6 +121,8 @@ angular.module('app.controllers', [])
           event.target.playVideo();
           socket.emit('removeSong', $scope.songs[0].id);
         } else {
+          console.log('destroy player');
+          $rootScope.destroyed = true;
           player.destroy();
         }
       };
@@ -130,7 +133,10 @@ angular.module('app.controllers', [])
         var topSong = $scope.sortedSongs[0];
         console.log("topsong:", topSong);
         if (topSong && event.data === YT.PlayerState.ENDED && socket.id() === Event.creator) {
+          console.log('creator', Event.creator);
+          console.log('socketID', socket.id());
           console.log("loadNext");
+          console.log('player', player);
           player.loadVideoById(topSong.id);
           socket.emit('removeSong', topSong.id);
         }
@@ -143,7 +149,8 @@ angular.module('app.controllers', [])
           return scope.songs;
         },
         function (newVal, oldVal) {
-          if (oldVal.length === 0 && newVal.length > 0) {
+          if ($rootScope.destroyed && newVal.length > 0) {
+            $rootScope.destroyed = false;
             $window.onYouTubeIframeAPIReady();
           }
         });
