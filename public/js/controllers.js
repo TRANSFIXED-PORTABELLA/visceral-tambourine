@@ -77,6 +77,11 @@ angular.module('app.controllers', [])
             item.votes = song.votes;
           }
         });
+        // multiple socket calls means this is called too often. 
+        //for efficiency it should be throttled.
+        $scope.sortedSongs = $scope.songs.sort(function (a,b) {
+          return b.votes - a.votes;
+        });
       });
 
       //let the server know that insider has arrived in the room.
@@ -131,12 +136,7 @@ angular.module('app.controllers', [])
       // plays next song if yes
       $window.loadNext = function loadNext(event) {
         var topSong = $scope.sortedSongs[0];
-        console.log("topsong:", topSong);
         if (topSong && event.data === YT.PlayerState.ENDED && socket.id() === Event.creator) {
-          console.log('creator', Event.creator);
-          console.log('socketID', socket.id());
-          console.log("loadNext");
-          console.log('player', player);
           player.loadVideoById(topSong.id);
           socket.emit('removeSong', topSong.id);
         }
@@ -145,16 +145,13 @@ angular.module('app.controllers', [])
       // if the songs list used to be empty but now isn't, call the
       // onYouTubeIframAPIReady function (for loading reasons, has to be called
       // manually like this when you return from the search page)
-      $scope.$watch(function (scope) {
-          return scope.songs;
-        },
+      $scope.$watch('songs',
         function (newVal, oldVal) {
           if ($rootScope.destroyed && newVal.length > 0) {
             $rootScope.destroyed = false;
             $window.onYouTubeIframeAPIReady();
           }
         });
-
     }
 
   ])

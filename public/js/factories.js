@@ -36,6 +36,10 @@ angular.module('app.services', ['app.url'])
         //The searchFactory getSearch results method handles the get request using the searchTerms provided
         //by the user in the page.
         getSearchResults: function (searchTerm) {
+          if (searchTerm === "") {
+            console.log("INPUT SOMETHING!!!!");
+            return;
+          }
           var editedSearchTerm = searchTerm.split(' ').join('+');
 
           return $http.get(Url.PREPEND_URL + editedSearchTerm + Url.APPEND_URL)
