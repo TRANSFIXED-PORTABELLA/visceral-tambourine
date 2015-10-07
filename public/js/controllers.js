@@ -78,7 +78,7 @@ angular.module('app.controllers', [])
           }
         });
       });
-      
+
       //let the server know that insider has arrived in the room.
       socket.emit('joined');
 
@@ -87,7 +87,6 @@ angular.module('app.controllers', [])
         //add the songs from the server to the local array
         //making sure thats its empty before doing so
         if ($scope.songs.length === 0) {
-
           $scope.songs = songs || [];
         }
 
@@ -106,10 +105,12 @@ angular.module('app.controllers', [])
 
       $window.onPlayerReady = function onPlayerReady(event) {
         console.log("ready");
-        if ($scope.songs[$scope.songIndex] && socket.id() === Event.creator) {
-          player.cueVideoById($scope.songs[$scope.songIndex].id);
-          $scope.songIndex++;
+        if ($scope.songs[0] && socket.id() === Event.creator) {
+          player.cueVideoById($scope.songs[0].id);
           event.target.playVideo();
+          $scope.songs.splice(0, 1);
+          $scope.sortedSongs.splice(0, 1);
+          $scope.$apply();
         } else {
           player.destroy();
         }
@@ -118,10 +119,17 @@ angular.module('app.controllers', [])
       // fired on any youtube state change, checks for a video ended event and
       // plays next song if yes
       $window.loadNext = function loadNext(event) {
-        if ($scope.songs[$scope.songIndex] && event.data === YT.PlayerState.ENDED && socket.id() === Event.creator) {
+        var topSong = $scope.sortedSongs[0];
+        if (topSong && event.data === YT.PlayerState.ENDED && socket.id() === Event.creator) {
           console.log("loadNext");
-          player.loadVideoById($scope.songs[$scope.songIndex].id);
-          $scope.songIndex++;
+          player.loadVideoById(topSong.id);
+          $scope.songs.forEach(function (item, index) {
+            if (item.id === topSong.id) {
+              $scope.songs.splice(index, 1);
+              $scope.sortedSongs.splice(0, 1);
+              $scope.$apply();
+            }
+          });
         }
         console.log("loadnext");
       };
