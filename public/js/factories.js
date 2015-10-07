@@ -37,7 +37,8 @@ angular.module('app.services', ['app.url'])
         //by the user in the page.
         getSearchResults: function (searchTerm) {
           if (searchTerm === "") {
-            return "INPUT SOMETHING!!!!"
+            console.log("INPUT SOMETHING!!!!");
+            return;
           }
           var editedSearchTerm = searchTerm.split(' ').join('+');
 
