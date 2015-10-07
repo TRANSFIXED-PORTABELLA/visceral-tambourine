@@ -99,6 +99,16 @@ angular.module('app.controllers', [])
         $scope.songs.push(song);
       });
 
+      socket.on('songRemoved', function (song) {
+        $scope.songs.forEach(function (item, index) {
+            if (item.id === song.id) {
+              $scope.songs.splice(index, 1);
+              $scope.sortedSongs.splice(0, 1);
+              $scope.$apply();
+            }
+          });
+      });
+
       $state.go('event.playlist');
 
       // fired when the youtube iframe api is ready
@@ -108,9 +118,7 @@ angular.module('app.controllers', [])
         if ($scope.songs[0] && socket.id() === Event.creator) {
           player.cueVideoById($scope.songs[0].id);
           event.target.playVideo();
-          $scope.songs.splice(0, 1);
-          $scope.sortedSongs.splice(0, 1);
-          $scope.$apply();
+          socket.emit('removeSong', $scope.songs[0].id);
         } else {
           player.destroy();
         }
@@ -120,18 +128,12 @@ angular.module('app.controllers', [])
       // plays next song if yes
       $window.loadNext = function loadNext(event) {
         var topSong = $scope.sortedSongs[0];
+        console.log("topsong:", topSong);
         if (topSong && event.data === YT.PlayerState.ENDED && socket.id() === Event.creator) {
           console.log("loadNext");
           player.loadVideoById(topSong.id);
-          $scope.songs.forEach(function (item, index) {
-            if (item.id === topSong.id) {
-              $scope.songs.splice(index, 1);
-              $scope.sortedSongs.splice(0, 1);
-              $scope.$apply();
-            }
-          });
+          socket.emit('removeSong', topSong.id);
         }
-        console.log("loadnext");
       };
 
       // if the songs list used to be empty but now isn't, call the

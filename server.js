@@ -63,6 +63,14 @@ io.on('connection', function (socket) {
     //broadcast to all insiders the added song
     io.to(insiderToEventMap[socket.id]).emit('songAdded', song);
   });
+  socket.on('removeSong', function (songID) {
+    eventState[insiderToEventMap[socket.id]].forEach(function(song, index) {
+      if (song.id === songID) {
+        eventState[insiderToEventMap[socket.id]].splice(index, 1);
+        io.to(insiderToEventMap[socket.id]).emit('songRemoved', song);
+      }
+    });
+  });
   socket.on('upVote', function (songID) {
     eventState[insiderToEventMap[socket.id]].forEach(function (song, index) {
       if (song.id === songID) {
