@@ -3,10 +3,12 @@
       <th class="plm prm ptm pbm">Order</th>
       <th class="plm prm ptm pbm">Title</th>
       <th class="plm prm ptm pbm">Cover</th>
+      <th class="plm prm ptm pbm">Votes</th>
     </tr>
     <tr ng-repeat="song in songs track by $index">
       <td class="plm prm ptm pbm ba b--light-gray">{{$index + 1}}</td>
       <td class="prm plm ptm pbm ba b--light-gray">{{song.title}}</td>
       <td class="prm plm ba b--light-gray pts"><img src="{{song.thumbnail}}" /></td>
+      <td class="plm prm ptm pbm ba b--light-gray" ng-click="upVote()">{{song.votes}}</td>
     </tr>
   </table>
