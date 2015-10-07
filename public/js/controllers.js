@@ -62,10 +62,23 @@ angular.module('app.controllers', [])
       $scope.roomInvite = $state.href($state.current.name, $state.params, {
         absolute: true
       });
+
       $scope.shareEvent = function () {
         new Clipboard('.share');
       };
 
+      $scope.upVote = function () {
+        socket.emit('upVote', this.song.id);
+      };
+
+      socket.on('voted', function (song) {
+        $scope.songs.forEach(function (item) {
+          if (item.id === song.id) {
+            item.votes = song.votes;
+          }
+        });
+      });
+      
       //let the server know that insider has arrived in the room.
       socket.emit('joined');
 
@@ -158,7 +171,8 @@ angular.module('app.controllers', [])
                 id: song.id.videoId,
                 url: 'https://www.youtube.com/embed/' + song.id.videoId,
                 title: song.snippet.title,
-                thumbnail: song.snippet.thumbnails.medium.url
+                thumbnail: song.snippet.thumbnails.medium.url,
+                votes: 0
               };
               $scope.searchResults.push(songObj);
               $scope.searchTerm = '';
