@@ -1,9 +1,9 @@
 <div class="mw-18 center tc">
   <form ng-submit="getSearchResults(searchTerm)" class="w-i pts pbs">
-    <input type="text" name="searchTerm" ng-model="searchTerm" placeholder="Song / Artist" class="darkest-blue tracked ptm pbm f2 tc br3 bal w-100" autofocus="autofocus"></input>
+    <input type="text" name="searchTerm" ng-model="searchTerm" placeholder="Song / Artist" class="darkest-blue tracked ptm pbm f2 tc br3 bal w-100" autofocus="autofocus" required></input>
 
     <div class="pts pbl w-100">
-      <button type="submit" class="search-button btn br3 pbm ptm  w-100 bg-darkest-blue white f2 b--blue tracked">Search</button>
+      <button type="submit" class="search-button btn br3 pbm ptm  w-100 bg-darkest-blue white f2 b--blue tracked" ng-disabled="searchTerm.$invalid">Search</button>
     </div>
     <div class="ptm pbs w-100">
       <button ng-click="home()" class="home-button btn br3 pbm ptm  w-100 white bg-blue b--dark-blue f2 tracked">Show Playlist</button>
