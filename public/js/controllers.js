@@ -61,6 +61,12 @@ angular.module('app.controllers', [])
         new Clipboard('.share');
       };
 
+      $scope.playNext = function () {
+        var topSong = $scope.sortedSongs[0];
+        player.loadVideoById(topSong.id);
+        socket.emit('removeSong', topSong.id);
+      };
+
       $scope.upVote = function () {
         socket.emit('upVote', this.song.id);
       };
