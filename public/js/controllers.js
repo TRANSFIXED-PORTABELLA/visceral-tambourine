@@ -102,15 +102,15 @@ angular.module('app.controllers', [])
       //add it to our local array
       socket.on('songAdded', function (song) {
         $scope.songs.push(song);
+        $scope.sortedSongs = $scope.songs.sort(function (a,b) {
+          return b.votes - a.votes;
+        });
       });
 
       socket.on('songRemoved', function (song) {
         $scope.songs.forEach(function (item, index) {
             if (item.id === song.id) {
               $scope.songs.splice(index, 1);
-              if ($scope.sortedSongs) {
-                $scope.sortedSongs.splice(0, 1);
-              }
             }
           });
       });
