@@ -20,18 +20,18 @@ io.on('connection', function (socket) {
   //triggered when the join button on landing.html is clicked
   socket.on('join', function (event) {
     console.log('joining event', event);
+    var successful = false;
     //server side socket will join the event passed in
     eventList.forEach(function(item) {
       if (item === event) {
-        console.log('success will be true');
         socket.join(event);
         insiderToEventMap[socket.id] = event;
-        socket.emit('success', true);
+        successful = true;
         return;
       }
     });
-    socket.emit('success', false);
-    console.log('success will be false');
+    socket.emit('success', successful);
+    console.log('success will be', successful);
   });
 
   //triggered when someone enters the event

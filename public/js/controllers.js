@@ -4,18 +4,6 @@ angular.module('app.controllers', [])
       console.log('in landing controller');
       //function called when join button clicked
       $scope.join = function (event) {
-        // //send the event to the server
-        // socket.emit('join', event);
-      
-        // socket.on('success', function (success) {
-        //   if (success) {
-        //     Event.event = event;
-        //     //move the insider into the event
-        //     $state.go('event', {event: event});
-        //   } else {
-        //     $scope.error = true;
-        //   }
-        // });
         $state.go('event', {event: event});
       };
       //directs user to the create event page
@@ -96,6 +84,8 @@ angular.module('app.controllers', [])
       socket.on('success', function (success) {
         if (success) {
           socket.emit('joined');
+        } else {
+          $state.go('landing');
         }
       });
 
