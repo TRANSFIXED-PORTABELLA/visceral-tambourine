@@ -1,20 +1,22 @@
 angular.module('app.controllers', [])
   .controller('LandingController', ['$scope', 'socket', 'Event', '$state',
     function ($scope, socket, Event, $state) {
+      console.log('in landing controller');
       //function called when join button clicked
       $scope.join = function (event) {
-        //send the event to the server
-        socket.emit('join', event);
+        // //send the event to the server
+        // socket.emit('join', event);
       
-        socket.on('success', function (success) {
-          if (success) {
-            Event.event = event;
-            //move the insider into the event
-            $state.go('event', {event: event});
-          } else {
-            $scope.error = true;
-          }
-        })
+        // socket.on('success', function (success) {
+        //   if (success) {
+        //     Event.event = event;
+        //     //move the insider into the event
+        //     $state.go('event', {event: event});
+        //   } else {
+        //     $scope.error = true;
+        //   }
+        // });
+        $state.go('event', {event: event});
       };
       //directs user to the create event page
       $scope.create = function () {
@@ -24,6 +26,7 @@ angular.module('app.controllers', [])
   ])
   .controller('CreateController', ['$scope', 'socket', 'Event', '$state',
     function ($scope, socket, Event, $state) {
+      console.log('in create controller');
       //function called when the create button is pushed
       $scope.create = function (event) {
         //send the event to the server so it can do creation things
@@ -42,8 +45,10 @@ angular.module('app.controllers', [])
       };
     }
   ])
-  .controller('EventController', ['$window', '$scope', '$state', 'socket', 'Event', '$rootScope',
-    function ($window, $scope, $state, socket, Event, $rootScope) {
+  .controller('EventController', ['$window', '$scope', '$state', 'socket', 'Event', '$rootScope', '$stateParams',
+    function ($window, $scope, $state, socket, Event, $rootScope, $stateParams) {
+      console.log('in event controller');
+
       //this is the array that gets ng-repeated in the view
       $scope.songs = [];
 
@@ -84,11 +89,18 @@ angular.module('app.controllers', [])
         });
       });
 
+      console.log('url', $stateParams.event);
+      socket.emit('join', $stateParams.event);
+
       //let the server know that insider has arrived in the room.
-      socket.emit('joined');
+      socket.on('success', function (success) {
+        if (success) {
+          socket.emit('joined');
+        }
+      });
 
       //server responses to this with the eventState
-      socket.on('joined', function (songs) {
+      socket.on('roomJoined', function (songs) {
         //add the songs from the server to the local array
         //making sure thats its empty before doing so
         if ($scope.songs.length === 0) {
@@ -159,6 +171,7 @@ angular.module('app.controllers', [])
     //******SearchController capitalized here, but not in original file. Check that it is consistently used in *****
     //HTML partial using this controller.
     function ($scope, $state, socket, searchFactory, Event) {
+      console.log('in search controller');
       //array of results we get back from the you tubes
       $scope.searchResults = [];
 
