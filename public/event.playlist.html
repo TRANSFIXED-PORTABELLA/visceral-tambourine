@@ -9,6 +9,9 @@
       <td class="plm prm ptm pbm ba b--light-gray">{{$index + 1}}</td>
       <td class="prm plm ptm pbm ba b--light-gray">{{song.title}}</td>
       <td class="prm plm ba b--light-gray pts"><img src="{{song.thumbnail}}" /></td>
-      <td class="plm prm ptm pbm ba b--light-gray" ng-click="upVote()">{{song.votes}}</td>
+      <td class="plm prm ptm pbm ba b--light-gray">
+        {{song.votes}}
+        <button ng-click="upVote()" ng-disabled="song.liked">Like!</button>
+      </td>
     </tr>
   </table>
