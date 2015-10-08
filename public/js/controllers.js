@@ -61,6 +61,12 @@ angular.module('app.controllers', [])
         new Clipboard('.share');
       };
 
+      $scope.playNext = function () {
+        var topSong = $scope.sortedSongs[0];
+        player.loadVideoById(topSong.id);
+        socket.emit('removeSong', topSong.id);
+      };
+
       $scope.upVote = function () {
         socket.emit('upVote', this.song.id);
       };
@@ -69,6 +75,7 @@ angular.module('app.controllers', [])
         $scope.songs.forEach(function (item) {
           if (item.id === song.id) {
             item.votes = song.votes;
+            item.liked = true;
           }
         });
         // multiple socket calls means this is called too often. 
@@ -192,7 +199,8 @@ angular.module('app.controllers', [])
                 url: 'https://www.youtube.com/embed/' + song.id.videoId,
                 title: song.snippet.title,
                 thumbnail: song.snippet.thumbnails.medium.url,
-                votes: 0
+                votes: 0,
+                liked: false
               };
               $scope.searchResults.push(songObj);
               $scope.searchTerm = '';
