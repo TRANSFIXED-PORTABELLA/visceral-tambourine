@@ -86,6 +86,8 @@ angular.module('app.controllers', [])
         if (success) {
           socket.emit('joined');
         } else {
+          $rootScope.destroyed = true;
+          player.destroy();
           $state.go('landing', {roomError: true});
         }
       });
