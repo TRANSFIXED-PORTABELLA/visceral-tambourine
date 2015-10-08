@@ -1,7 +1,8 @@
 angular.module('app.controllers', [])
-  .controller('LandingController', ['$scope', 'socket', 'Event', '$state',
-    function ($scope, socket, Event, $state) {
+  .controller('LandingController', ['$scope', 'socket', 'Event', '$state', '$stateParams',
+    function ($scope, socket, Event, $state, $stateParams) {
       console.log('in landing controller');
+      $scope.error = $stateParams.roomError;
       //function called when join button clicked
       $scope.join = function (event) {
         $state.go('event', {event: event});
@@ -85,7 +86,7 @@ angular.module('app.controllers', [])
         if (success) {
           socket.emit('joined');
         } else {
-          $state.go('landing');
+          $state.go('landing', {roomError: true});
         }
       });
 

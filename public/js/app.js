@@ -2,6 +2,7 @@ angular.module('app', ['app.controllers', 'app.services','ui.router', 'app.url']
   .config(function ($stateProvider, $urlRouterProvider) {
     $stateProvider
       .state('landing', {
+        params: {roomError: false},
         templateUrl: 'landing.html',
         url: '/',
         controller: 'LandingController'
