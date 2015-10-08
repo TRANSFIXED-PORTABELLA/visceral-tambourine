@@ -11,18 +11,19 @@ app.get('/', function (req, res) {
   res.sendStatus(200);
 });
 
-
-
 var eventState = {};
 var eventList = [];
 var insiderToEventMap = {};
 
 io.on('connection', function (socket) {
+  console.log('starting connect on socket', socket.id);
   //triggered when the join button on landing.html is clicked
   socket.on('join', function (event) {
+    console.log('joining event', event);
     //server side socket will join the event passed in
     eventList.forEach(function(item) {
       if (item === event) {
+        console.log('success will be true');
         socket.join(event);
         insiderToEventMap[socket.id] = event;
         socket.emit('success', true);
@@ -30,12 +31,14 @@ io.on('connection', function (socket) {
       }
     });
     socket.emit('success', false);
+    console.log('success will be false');
   });
 
   //triggered when someone enters the event
   socket.on('joined', function () {
+    console.log('joined the room! yay!', socket.id);
     //send the state of the event to the client
-    socket.emit('joined', eventState[insiderToEventMap[socket.id]]);
+    socket.emit('roomJoined', eventState[insiderToEventMap[socket.id]]);
   });
 
   //triggered when the create button is clicked on create.html
