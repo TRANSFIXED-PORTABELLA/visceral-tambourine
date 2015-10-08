@@ -1,6 +1,6 @@
 angular.module('app.controllers', [])
-  .controller('LandingController', ['$scope', '$location', 'socket', 'Event',
-    function ($scope, $location, socket, Event) {
+  .controller('LandingController', ['$scope', 'socket', 'Event', '$state',
+    function ($scope, socket, Event, $state) {
       //function called when join button clicked
       $scope.join = function (event) {
         //send the event to the server
@@ -10,7 +10,7 @@ angular.module('app.controllers', [])
           if (success) {
             Event.event = event;
             //move the insider into the event
-            $location.path('/events/' + event);
+            $state.go('event', {event: event});
           } else {
             $scope.error = true;
           }
@@ -18,12 +18,12 @@ angular.module('app.controllers', [])
       };
       //directs user to the create event page
       $scope.create = function () {
-        $location.path('/create');
+        $state.go('create');
       };
     }
   ])
-  .controller('CreateController', ['$scope', '$location', 'socket', 'Event',
-    function ($scope, $location, socket, Event) {
+  .controller('CreateController', ['$scope', 'socket', 'Event', '$state',
+    function ($scope, socket, Event, $state) {
       //function called when the create button is pushed
       $scope.create = function (event) {
         //send the event to the server so it can do creation things
@@ -34,7 +34,7 @@ angular.module('app.controllers', [])
             Event.event = event;
             Event.creator = socket.id();
             //redirect  to the event
-            $location.path('/events/' + event);
+            $state.go('event', {event: event});
           } else {
             $scope.error = true;
           }
