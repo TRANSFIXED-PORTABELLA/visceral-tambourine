@@ -1467,6 +1467,15 @@ table {
     margin-right: 256px;
   }
 }
+@media screen and (min-width: 40em) and (max-width: 200em) {
+  .pll-z { 
+    padding-left: 200px;
+  }
+
+  .prl-z { 
+    padding-right: 200px;
+  }
+}
 
 @media screen and (min-width: 30em) and (max-width: 60em) {
   .pan-m {
