@@ -1,17 +1,17 @@
-<div class="pbm">
-  <button ng-click="search()" class="add-button btn br3 pbm ptm prxl plxl bg-darkest-blue white f2 b--blue tracked">Add Songs</button>
-</div>
-<div class="pbl">
-  <button class="btn br3 pbm ptm prl pll bg-blue white f3 b--blue tracked share" ng-click="shareEvent()" data-clipboard-text="{{roomInvite}}">&nbsp;Copy Event URL&nbsp;</button>
-</div>
-
+<md-content layout-padding>
 <div ng-show="songs.length >= 0 && isCreator" class="player-container">
-  <div id="player" class="center tc pbl ptm"></div>
+  <div id="player"></div>
   <!-- Next button to skip song -->
-  <div class="pbl">
-    <button class="btn br3 pbm ptm prl pll bg-blue white f3 b--blue tracked share" ng-click="playNext()">>></button>
+  <div>
+    <md-button class="md-fab" aria-label="Eat cake" ng-click="playNext()">
+    </md-button>
   </div>
 </div>
+  <md-button class="md-raised md-primary" ng-click="search()" >Add Songs</md-button>
+  <md-button class="md-raised" ng-click="shareEvent()" data-clipboard-text="{{roomInvite}}">&nbsp;Copy Event URL&nbsp;</md-button>
+</md-content>
+
+
 
 <div ui-view></div>
 
