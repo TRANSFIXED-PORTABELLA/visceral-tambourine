@@ -1,25 +1,10 @@
-<!-- <md-content layout-padding>
-<md-list-item ng-repeat="song in songs | orderBy : '-votes' as sortedSongs">
-    <p>{{message.title}}</p>
-    <md-icon class="md-secondary" ng-click="doSecondaryAction($event)" aria-label="Chat" md-svg-icon="communication:message"></md-icon>
+<md-content layout-padding>
+  <md-list-item ng-repeat="song in songs | orderBy : '-votes' as sortedSongs">
+    <img alt="{{ song.title }}" ng-src="{{ song.thumbnail }}" style="min-width:100px; min-height:100px;"  class="md-avatar"/>
+    <p style="padding-right:50px;">{{song.title}} <br><strong>Votes: {{song.votes}}</strong></p>
+    <button class="md-secondary" ng-click="upVote()" ng-disabled="song.liked" style="background: transparent; border: none !important;">
+      <img class="h2 v-mid plxs pbms" ng-hide="song.liked" src="images/empty-heart.png"></img>
+      <img class="h2 v-mid plxs pbms" ng-show="song.liked" src="images/filled-heart.png"></img>
+    </button>
   </md-list-item>
-</md-content> -->
-
-  <table class="center tc pbl ptl f2-l f2-m darkest-blue w-100">
-    <tr class="bg-dark-blue white pbm">
-      <th class="plm prm ptm pbm">Cover</th>
-      <th class="plm prm ptm pbm">Title</th>
-      <th class="plm prm ptm pbm">Votes</th>
-    </tr>
-    <tr ng-repeat="song in songs | orderBy : '-votes' as sortedSongs">
-      <td class="prm plm ba b--light-gray pts"><img src="{{song.thumbnail}}" /></td>
-      <td class="prm plm ptm pbm ba b--light-gray">{{song.title}}</td>
-      <td class="plm prm ptm pbm ba b--light-gray">
-        {{song.votes}}
-        <button ng-click="upVote()" ng-disabled="song.liked" style="background: transparent; border: none !important; font-size:0;">
-          <img class="h2 v-mid plxs pbms" ng-hide="song.liked" src="images/empty-heart.png"></img>
-          <img class="h2 v-mid plxs pbms" ng-show="song.liked" src="images/filled-heart.png"></img>
-        </button>
-      </td>
-    </tr>
-  </table>
+</md-content>
