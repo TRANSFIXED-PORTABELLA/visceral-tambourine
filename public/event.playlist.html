@@ -9,7 +9,10 @@
       <td class="prm plm ptm pbm ba b--light-gray">{{song.title}}</td>
       <td class="plm prm ptm pbm ba b--light-gray">
         {{song.votes}}
-        <button ng-click="upVote()" ng-disabled="song.liked">Like!</button>
+        <button ng-click="upVote()" ng-disabled="song.liked" style="background: transparent; border: none !important; font-size:0;">
+          <img class="h2 v-mid plxs pbms" ng-hide="song.liked" src="images/empty-heart.png"></img>
+          <img class="h2 v-mid plxs pbms" ng-show="song.liked" src="images/filled-heart.png"></img>
+        </button>
       </td>
     </tr>
   </table>
