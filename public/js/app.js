@@ -1,4 +1,4 @@
-angular.module('app', ['app.controllers', 'app.services','ui.router', 'app.url', 'ngMaterial'])
+angular.module('app', ['app.controllers', 'app.services','ui.router', 'app.url', 'ngMaterial', 'ngMdIcons'])
   .config(function ($stateProvider, $urlRouterProvider) {
     $stateProvider
       .state('landing', {
