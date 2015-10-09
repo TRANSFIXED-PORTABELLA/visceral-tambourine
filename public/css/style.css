@@ -1,0 +1,42 @@
+.title {
+  margin-right: auto;
+  margin-left: auto;
+  text-align: center;
+  font-size: 4rem;
+  color: #002f86;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+}
+
+.title-y {
+  letter-spacing: 0.05em;
+}
+
+.title-o {
+  height: 3rem;
+  vertical-align: middle;
+  padding-left: 4px;
+  padding-bottom: .75rem;
+}
+.title-d {
+  height: 3rem;
+  vertical-align: middle;
+  padding-bottom: .75rem;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.main{
+  margin-right: auto;
+  margin-left: auto; 
+  text-align: center;
+}
+
+.text-center {
+  text-align: center; 
+}
+
+.heart {
+  height: 2rem;
+}
+
