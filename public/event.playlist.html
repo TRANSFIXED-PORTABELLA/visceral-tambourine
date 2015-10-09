@@ -3,8 +3,8 @@
     <img alt="{{ song.title }}" ng-src="{{ song.thumbnail }}" style="min-width:100px; min-height:100px;"  class="md-avatar"/>
     <p style="padding-right:50px;">{{song.title}} <br><strong>Votes: {{song.votes}}</strong></p>
     <button class="md-secondary" ng-click="upVote()" ng-disabled="song.liked" style="background: transparent; border: none !important;">
-      <img class="h2 v-mid plxs pbms" ng-hide="song.liked" src="images/empty-heart.png"></img>
-      <img class="h2 v-mid plxs pbms" ng-show="song.liked" src="images/filled-heart.png"></img>
+      <img class="heart" ng-hide="song.liked" src="images/empty-heart.png"></img>
+      <img class="heart" ng-show="song.liked" src="images/filled-heart.png"></img>
     </button>
   </md-list-item>
 </md-content>

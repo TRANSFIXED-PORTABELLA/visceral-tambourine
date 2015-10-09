@@ -2,7 +2,7 @@
   <form ng-submit="getSearchResults(searchTerm)">
     <md-input-container>
       <label>Search</label>
-      <input type="text" name="searchTerm" ng-model="searchTerm" autofocus="autofocus" required/>
+      <input type="text" class="text-center" name="searchTerm" ng-model="searchTerm" autofocus="autofocus" required/>
     </md-input-container>
       <div>
         <md-button type="submit"  class="md-raised md-primary search-button" ng-disabled="searchTerm.$invalid">Search</md-button>
