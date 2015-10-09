@@ -7,11 +7,6 @@ angular.module('app', ['app.controllers', 'app.services','ui.router', 'app.url']
         url: '/',
         controller: 'LandingController'
       })
-      .state('create', {
-        url: '/create',
-        templateUrl: 'create.html',
-        controller: 'CreateController'
-      })
       .state('event', {
         url: '/events/:event',
         templateUrl: 'event.html',
