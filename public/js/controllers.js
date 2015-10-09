@@ -60,13 +60,14 @@ angular.module('app.controllers', [])
 
       $scope.upVote = function () {
         socket.emit('upVote', this.song.id);
+        console.log(this.song.liked);
+        this.song.liked = true;
       };
 
       socket.on('voted', function (song) {
         $scope.songs.forEach(function (item) {
           if (item.id === song.id) {
             item.votes = song.votes;
-            item.liked = true;
           }
         });
         // multiple socket calls means this is called too often. 
