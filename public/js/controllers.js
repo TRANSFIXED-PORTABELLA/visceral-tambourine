@@ -2,23 +2,13 @@ angular.module('app.controllers', [])
   .controller('LandingController', ['$scope', 'socket', 'Event', '$state', '$stateParams',
     function ($scope, socket, Event, $state, $stateParams) {
       console.log('in landing controller');
-      $scope.error = $stateParams.roomError;
+      $scope.joinError = $stateParams.roomError;
       //function called when join button clicked
       $scope.join = function (event) {
         $state.go('event', {event: event});
       };
       //directs user to the create event page
-      $scope.create = function () {
-        $state.go('create');
-      };
-    }
-  ])
-  .controller('CreateController', ['$scope', 'socket', 'Event', '$state',
-    function ($scope, socket, Event, $state) {
-      console.log('in create controller');
-      //function called when the create button is pushed
       $scope.create = function (event) {
-        //send the event to the server so it can do creation things
         socket.emit('create', event);
         socket.on('createable', function (createable) {
           if (createable) {
@@ -28,7 +18,8 @@ angular.module('app.controllers', [])
             //redirect  to the event
             $state.go('event', {event: event});
           } else {
-            $scope.error = true;
+            $scope.joinError = false;
+            $scope.createError = true;
           }
         });
       };

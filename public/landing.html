@@ -1,11 +1,13 @@
 <div class="center tc">
-  <p ng-show="error">event does not exist. Make sure you typed it in right, or if you'd like, hit the create button below</p>
-  <form ng-submit="join(event)" class="pbs">
+  <p ng-show="joinError">Event does not exist. Make sure you typed it in right, or if you'd like, hit the create button below.</p>
+  <p ng-show="createError">That event already exists, go ahead and try again.</p>
+  <form class="pbs">
     <input ng-model="event" autofocus="autofocus" class="ptm pbm prm plm f2 tc br3 bal tracked" placeholder="Enter event name" />
     <div class="pts">
-      <button type="submit" class="join-button btn br3 pbm ptm pr-special pl-special bg-darkest-blue white f2 b--blue tracked">Join</button>
+      <button ng-click="join(event)" type="submit" class="join-button btn br3 pbm ptm pr-special pl-special bg-darkest-blue white f2 b--blue tracked">Join</button>
+      <!-- <p class="f2 dark-blue ttu tracked pbs">or</p> -->
+      <button ng-click="create(event)" class="create-button btn br3 pbm ptm pr-other pl-other white bg-blue b--dark-blue f2 tracked">Create</button>
     </div>
   </form>
-  <h2 class="f2 dark-blue ttu tracked pbs">or</h2>
-  <button ng-click="create()" class="create-button btn br3 pbm ptm pr-other pl-other white bg-blue b--dark-blue f2 tracked">Create</button>
+  
 </div>
