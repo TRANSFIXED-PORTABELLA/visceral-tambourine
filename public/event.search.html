@@ -11,10 +11,12 @@
   </form>
 
   <md-list ng-repeat="song in searchResults">
+  <md-card>
     <img alt="{{ song.title }}" ng-src="{{ song.thumbnail }}"/>
-    <p style="padding-right:50px;">{{song.title}}</p>
-    <md-button class="md-fab" ng-click="addSong(song)" style="font-size: 250%;">
+    <p style="padding-right:50px; margin-right: auto;">{{song.title}}</p>
+    <md-button class="md-fab main" ng-click="addSong(song)" style="font-size: 250%;">
       +
     </md-button>
+  </md-card>
   </md-list>
 </md-content>

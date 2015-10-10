@@ -2,9 +2,10 @@
   <md-list-item ng-repeat="song in songs | orderBy : '-votes' as sortedSongs">
     <img alt="{{ song.title }}" ng-src="{{ song.thumbnail }}" style="min-width:100px; min-height:100px;"  class="md-avatar"/>
     <p style="padding-right:50px;">{{song.title}} <br><strong>Votes: {{song.votes}}</strong></p>
-    <button class="md-secondary" ng-click="upVote()" ng-disabled="song.liked" style="background: transparent; border: none !important;">
+    <button class="md-secondary heart-button" ng-click="upVote()" ng-disabled="song.liked">
       <img class="heart" ng-hide="song.liked" src="images/empty-heart.png"></img>
       <img class="heart" ng-show="song.liked" src="images/filled-heart.png"></img>
     </button>
+    <md-divider ng-if="!$last"></md-divider>
   </md-list-item>
 </md-content>

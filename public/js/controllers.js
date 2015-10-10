@@ -39,8 +39,11 @@ angular.module('app.controllers', [])
       // to keep track of which song is up
       $scope.songIndex = 0;
 
+      $rootScope.inSearch = false;
+
       //link to the search view
       $scope.search = function () {
+        $rootScope.inSearch = true;
         $state.go('event.search');
       };
 
@@ -159,16 +162,17 @@ angular.module('app.controllers', [])
     }
 
   ])
-  .controller('SearchController', ['$scope', '$state', 'socket', 'searchFactory', 'Event',
+  .controller('SearchController', ['$scope', '$state', 'socket', 'searchFactory', 'Event', '$rootScope',
     //******SearchController capitalized here, but not in original file. Check that it is consistently used in *****
     //HTML partial using this controller.
-    function ($scope, $state, socket, searchFactory, Event) {
+    function ($scope, $state, socket, searchFactory, Event, $rootScope) {
       console.log('in search controller');
       //array of results we get back from the you tubes
       $scope.searchResults = [];
 
       //link back to event
       $scope.home = function () {
+        $rootScope.inSearch = false;
         $state.go('event.playlist');
       };
 
